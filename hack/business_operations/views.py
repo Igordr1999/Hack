@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 
 from .models import *
 from .serializers import CitySerializer, StoryImageSerializer, StorySerializer, GuideSerializer, RouteSerializer, \
-    RouteCreateSerializer
+    RouteCreateSerializer, ShortRouteSerializer
 
 from .models import City, StoryImage, Story
 
@@ -49,11 +49,12 @@ class RouteDetailView(generics.RetrieveAPIView):
 
 
 class RouteListView(generics.ListAPIView):
-    serializer_class = RouteSerializer
+    serializer_class = ShortRouteSerializer
 
     def get_queryset(self):
-        # routes = Route.objects.filter(profile=self.request.user)
-        routes = Route.objects.all()
+        print(self.request.user)
+        routes = Route.objects.filter(profile=self.request.user)
+        # routes = Route.objects.all()
         return routes
 
 

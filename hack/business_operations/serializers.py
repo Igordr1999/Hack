@@ -48,9 +48,28 @@ class GuideSerializer(serializers.ModelSerializer):
                   'is_news', 'is_event', 'lat', 'lon', 'event_date', 'blocks')
 
 
+class ShortGuideSerializer(serializers.ModelSerializer):
+    author = ProfileFullnameSerializer()
+
+    class Meta:
+        model = Guide
+        fields = ('id', 'title', 'description', 'preview_image',
+                  'created', 'author', 'rating',
+                  'is_news', 'is_event', 'lat', 'lon', 'event_date')
+
+
 class RouteSerializer(serializers.ModelSerializer):
     profile = ProfileFullnameSerializer()
     steps = GuideSerializer(many=True)
+
+    class Meta:
+        model = Route
+        fields = ('id', 'profile', 'steps', 'paid')
+
+
+class ShortRouteSerializer(serializers.ModelSerializer):
+    profile = ProfileFullnameSerializer()
+    steps = ShortGuideSerializer(many=True)
 
     class Meta:
         model = Route
