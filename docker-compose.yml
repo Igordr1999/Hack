@@ -1,0 +1,107 @@
+version: '3'
+
+services:
+  database1:
+    image: postgres:11.1
+    volumes:
+      - database1_volume:/var/lib/postgresql/data
+    env_file:
+      - config/db/database1_env
+    networks:
+      - database1_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U database1_role -d database1" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  database2:
+    image: postgres:11.1
+    volumes:
+      - database2_volume:/var/lib/postgresql/data
+    env_file:
+      - config/db/database2_env
+    networks:
+      - database2_network
+
+  djangoapp:
+    build: .
+    environment:
+      - DJANGO_SETTINGS_MODULE
+    volumes:
+      - .:/opt/services/djangoapp/src
+      - static:/opt/services/djangoapp/static
+      - media:/opt/services/djangoapp/media
+    networks:
+      - database1_network
+      - database2_network
+      - nginx_network
+    depends_on:
+      - database1
+      - database2
+
+  # reverse proxy container (nginx)
+  nginx:
+    image: nginx:1.15.8
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./config/nginx/conf.d:/etc/nginx/conf.d
+      - ./config/nginx/certs:/etc/ssl/certs
+      - ./config/nginx/private:/etc/ssl/private
+      - static:/opt/services/djangoapp/static
+      - media:/opt/services/djangoapp/media
+    networks:
+      - nginx_network
+    depends_on:
+      - djangoapp
+
+  redis:
+    image: redis:latest
+    container_name: rz01
+    ports:
+      - "6379:6379"
+    networks:
+      - nginx_network
+
+  celery:
+    build: .
+    command: celery -A hack worker -l info
+    working_dir: /code/hack
+    volumes:
+      - .:/code
+    depends_on:
+      - database1
+      - redis
+    networks:
+      - database1_network
+      - nginx_network
+
+  celerybeat:
+    build: .
+    command: celery -A hack beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    working_dir: /code/hack
+    volumes:
+      - .:/code
+    depends_on:
+      - database1
+      - redis
+    networks:
+      - database1_network
+      - nginx_network
+
+
+networks:
+  database1_network:
+    driver: bridge
+  database2_network:
+    driver: bridge
+  nginx_network:
+    driver: bridge
+
+volumes:
+  database1_volume:
+  database2_volume:
+  static:
+  media:
