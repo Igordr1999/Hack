@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import City, Story, StoryImage, GuideBlock, Guide, GuideBlockImage, Route
+from .models import City, Story, StoryImage, GuideBlock, Guide, GuideBlockImage, Route, GuideCategory
 
 
 @admin.register(City)
@@ -15,6 +15,11 @@ class StoryImageAdmin(admin.ModelAdmin):
 @admin.register(Story)
 class StoryAdmin(admin.ModelAdmin):
     list_display = ['id']
+
+
+@admin.register(GuideCategory)
+class GuideCategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'color']
 
 
 @admin.register(GuideBlockImage)
