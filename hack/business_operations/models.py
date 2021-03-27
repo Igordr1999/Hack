@@ -17,6 +17,7 @@ import shutil
 import requests
 import uuid
 from django.utils.translation import gettext_lazy as _
+from personal_data.models import Profile
 
 
 class City(models.Model):
@@ -43,3 +44,32 @@ class Story(models.Model):
 
     class Meta:
         ordering = ["circle_title"]
+
+
+class GuideBlock(models.Model):
+    title = models.CharField(max_length=32)
+    description = models.CharField(max_length=500)
+    image = models.ImageField(upload_to="guideblock/", null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ["title"]
+
+
+class Guide(models.Model):
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    title = models.CharField(max_length=32)
+    description = models.CharField(max_length=500)
+    preview_image = models.ImageField(upload_to="guidepreviewimage/", null=True, blank=True)
+    created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    author = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
+    rating = models.IntegerField(default=5)
+    blocks = models.ManyToManyField(GuideBlock)
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        ordering = ["title"]

@@ -9,7 +9,7 @@ from itertools import chain
 from django.utils.translation import gettext_lazy as _
 
 from .models import *
-from .serializers import CitySerializer, StoryImageSerializer, StorySerializer
+from .serializers import CitySerializer, StoryImageSerializer, StorySerializer, GuideSerializer
 
 from .models import City, StoryImage, Story
 
@@ -26,3 +26,13 @@ class GetCities(generics.ListAPIView):
 class GetStories(generics.ListAPIView):
     serializer_class = StorySerializer
     queryset = Story.objects.all()
+
+
+class GuideView(generics.RetrieveAPIView):
+    serializer_class = GuideSerializer
+
+    def get_object(self):
+        city_id = self.request.GET.get('city_id', '')
+        city = get_object_or_404(City, id=city_id)
+        guide = Guide.objects.filter(city=city).first()
+        return guide
