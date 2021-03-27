@@ -29,13 +29,13 @@ class GetStories(generics.ListAPIView):
     queryset = Story.objects.all()
 
 
-class GuideView(generics.RetrieveAPIView):
+class GuideView(generics.ListAPIView):
     serializer_class = GuideSerializer
 
-    def get_object(self):
+    def get_queryset(self):
         city_id = self.request.GET.get('city_id', '')
         city = get_object_or_404(City, id=city_id)
-        guide = Guide.objects.filter(city=city).first()
+        guide = Guide.objects.filter(city=city).order_by('-rating')[:10]
         return guide
 
 
