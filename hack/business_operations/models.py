@@ -46,6 +46,17 @@ class Story(models.Model):
         ordering = ["circle_title"]
 
 
+class GuideCategory(models.Model):
+    name = models.CharField(max_length=64)
+    color = models.CharField(max_length=6)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        ordering = ["name"]
+
+
 class GuideBlockImage(models.Model):
     image = models.ImageField(upload_to="guideblockimage/", null=True, blank=True)
 
@@ -65,6 +76,7 @@ class GuideBlock(models.Model):
 
 class Guide(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
+    category = models.ForeignKey(GuideCategory, on_delete=models.CASCADE, null=True, blank=True)
     title = models.CharField(max_length=32)
     description = models.CharField(max_length=500)
     preview_image = models.ImageField(upload_to="guidepreviewimage/", null=True, blank=True)

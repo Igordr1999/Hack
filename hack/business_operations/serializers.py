@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import City, StoryImage, Story, GuideBlock, Guide, GuideBlockImage, Route
+from .models import City, StoryImage, Story, GuideBlock, Guide, GuideBlockImage, Route, GuideCategory
 from personal_data.serializers import ProfileFullnameSerializer
 
 
@@ -23,6 +23,12 @@ class StorySerializer(serializers.ModelSerializer):
         fields = ('id', 'circle_title', 'circle_image', 'images')
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GuideCategory
+        fields = ('id', 'name', 'color')
+
+
 class GuideBlockImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = GuideBlockImage
@@ -40,20 +46,25 @@ class GuideBlockSerializer(serializers.ModelSerializer):
 class GuideSerializer(serializers.ModelSerializer):
     blocks = GuideBlockSerializer(many=True)
     author = ProfileFullnameSerializer()
+    category = CategorySerializer()
+    city = CitySerializer()
 
     class Meta:
         model = Guide
-        fields = ('id', 'title', 'description', 'preview_image',
+        fields = ('id', 'category', 'city',
+                  'title', 'description', 'preview_image',
                   'created', 'author', 'rating',
                   'is_news', 'is_event', 'lat', 'lon', 'event_date', 'blocks')
 
 
 class ShortGuideSerializer(serializers.ModelSerializer):
     author = ProfileFullnameSerializer()
+    category = CategorySerializer()
 
     class Meta:
         model = Guide
-        fields = ('id', 'title', 'description', 'preview_image',
+        fields = ('id', 'category',
+                  'title', 'description', 'preview_image',
                   'created', 'author', 'rating',
                   'is_news', 'is_event', 'lat', 'lon', 'event_date')
 
