@@ -9,11 +9,20 @@ from itertools import chain
 from django.utils.translation import gettext_lazy as _
 
 from .models import *
-from .serializers import *
+from .serializers import CitySerializer, StoryImageSerializer, StorySerializer
 
-from personal_data.models import Profile
+from .models import City, StoryImage, Story
 
 
 def input_bool(input_str):
     return input_str.lower() in ("yes", "true", "t", "1")
 
+
+class GetCities(generics.ListAPIView):
+    serializer_class = CitySerializer
+    queryset = City.objects.all()
+
+
+class GetStories(generics.ListAPIView):
+    serializer_class = StorySerializer
+    queryset = Story.objects.all()
