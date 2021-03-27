@@ -44,5 +44,6 @@ class GuideSerializer(serializers.ModelSerializer):
     class Meta:
         model = Guide
         fields = ('id', 'title', 'description', 'preview_image',
-                  'created', 'author', 'rating', 'blocks')
+                  'created', 'author', 'rating',
+                  'is_news', 'is_event', 'lat', 'lon', 'event_date', 'blocks')
 

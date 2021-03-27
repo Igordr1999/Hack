@@ -71,6 +71,12 @@ class Guide(models.Model):
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
     rating = models.IntegerField(default=5)
+
+    is_news = models.BooleanField(default=False)
+    is_event = models.BooleanField(default=False)
+    lat = models.FloatField(default=55.7522)
+    lon = models.FloatField(default=37.6156)
+    event_date = models.DateTimeField(null=True, blank=True)
     blocks = models.ManyToManyField(GuideBlock)
 
     def __str__(self):
