@@ -84,3 +84,9 @@ class Guide(models.Model):
 
     class Meta:
         ordering = ["title"]
+
+
+class Route(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    steps = models.ManyToManyField(Guide)
+    paid = models.BooleanField(default=False)

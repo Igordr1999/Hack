@@ -9,7 +9,8 @@ from itertools import chain
 from django.utils.translation import gettext_lazy as _
 
 from .models import *
-from .serializers import CitySerializer, StoryImageSerializer, StorySerializer, GuideSerializer
+from .serializers import CitySerializer, StoryImageSerializer, StorySerializer, GuideSerializer, RouteSerializer, \
+    RouteCreateSerializer
 
 from .models import City, StoryImage, Story
 
@@ -36,3 +37,25 @@ class GuideView(generics.RetrieveAPIView):
         city = get_object_or_404(City, id=city_id)
         guide = Guide.objects.filter(city=city).first()
         return guide
+
+
+class RouteDetailView(generics.RetrieveAPIView):
+    serializer_class = RouteSerializer
+
+    def get_object(self):
+        route_id = self.request.GET.get('route_id', '')
+        route = get_object_or_404(Route, id=route_id)
+        return route
+
+
+class RouteListView(generics.ListAPIView):
+    serializer_class = RouteSerializer
+
+    def get_queryset(self):
+        # routes = Route.objects.filter(profile=self.request.user)
+        routes = Route.objects.all()
+        return routes
+
+
+class RouteCreate(generics.CreateAPIView):
+    serializer_class = RouteCreateSerializer

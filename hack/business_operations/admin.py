@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import City, Story, StoryImage, GuideBlock, Guide, GuideBlockImage
+from .models import City, Story, StoryImage, GuideBlock, Guide, GuideBlockImage, Route
 
 
 @admin.register(City)
@@ -30,3 +30,8 @@ class GuideAdmin(admin.ModelAdmin):
 @admin.register(Guide)
 class GuideAdmin(admin.ModelAdmin):
     list_display = ['title', 'preview_image', 'created', 'created', 'author', 'rating']
+
+
+@admin.register(Route)
+class RouteAdmin(admin.ModelAdmin):
+    list_display = ['id', 'profile', 'paid']

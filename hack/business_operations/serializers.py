@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import City, StoryImage, Story, GuideBlock, Guide, GuideBlockImage
+from .models import City, StoryImage, Story, GuideBlock, Guide, GuideBlockImage, Route
 from personal_data.serializers import ProfileFullnameSerializer
 
 
@@ -47,3 +47,18 @@ class GuideSerializer(serializers.ModelSerializer):
                   'created', 'author', 'rating',
                   'is_news', 'is_event', 'lat', 'lon', 'event_date', 'blocks')
 
+
+class RouteSerializer(serializers.ModelSerializer):
+    profile = ProfileFullnameSerializer()
+    steps = GuideSerializer(many=True)
+
+    class Meta:
+        model = Route
+        fields = ('id', 'profile', 'steps', 'paid')
+
+
+class RouteCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Route
+        fields = ('id', 'profile', 'steps', 'paid')
