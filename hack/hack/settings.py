@@ -14,8 +14,7 @@ ALLOWED_HOSTS = [
     'testserver',
     'localhost',
     '127.0.0.1',
-    '79.143.31.152',
-    '93.175.29.222',
+    '77.223.96.208',
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
@@ -79,10 +78,10 @@ WSGI_APPLICATION = 'hack.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'database11',
+        'NAME': 'database1',
         'USER': 'database1_role',
         'PASSWORD': 'database1_password',
-        'HOST': 'localhost',
+        'HOST': 'database1',
         'PORT': '5432',
         'TEST': {
             'NAME': 'database2',
