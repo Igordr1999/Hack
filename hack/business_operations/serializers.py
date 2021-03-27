@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import City, StoryImage, Story, GuideBlock, Guide
+from .models import City, StoryImage, Story, GuideBlock, Guide, GuideBlockImage
 from personal_data.serializers import ProfileFullnameSerializer
 
 
@@ -23,10 +23,18 @@ class StorySerializer(serializers.ModelSerializer):
         fields = ('id', 'circle_title', 'circle_image', 'images')
 
 
+class GuideBlockImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GuideBlockImage
+        fields = ('id', 'image')
+
+
 class GuideBlockSerializer(serializers.ModelSerializer):
+    carousel = GuideBlockImageSerializer(many=True)
+
     class Meta:
         model = GuideBlock
-        fields = ('id', 'title', 'description', 'image')
+        fields = ('id', 'title', 'description', 'image', 'carousel')
 
 
 class GuideSerializer(serializers.ModelSerializer):

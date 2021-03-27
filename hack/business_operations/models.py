@@ -46,10 +46,15 @@ class Story(models.Model):
         ordering = ["circle_title"]
 
 
+class GuideBlockImage(models.Model):
+    image = models.ImageField(upload_to="guideblockimage/", null=True, blank=True)
+
+
 class GuideBlock(models.Model):
     title = models.CharField(max_length=32)
     description = models.CharField(max_length=500)
     image = models.ImageField(upload_to="guideblock/", null=True, blank=True)
+    carousel = models.ManyToManyField(GuideBlockImage)
 
     def __str__(self):
         return self.title
