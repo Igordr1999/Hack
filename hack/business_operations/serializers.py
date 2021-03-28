@@ -54,7 +54,8 @@ class GuideSerializer(serializers.ModelSerializer):
         fields = ('id', 'category', 'city',
                   'title', 'description', 'preview_image',
                   'created', 'author', 'rating',
-                  'is_news', 'is_event', 'lat', 'lon', 'event_date', 'blocks')
+                  'is_news', 'is_event', 'lat', 'lon', 'event_date', 'blocks',
+                  'image_url', 'address',)
 
 
 class ShortGuideSerializer(serializers.ModelSerializer):
@@ -66,7 +67,8 @@ class ShortGuideSerializer(serializers.ModelSerializer):
         fields = ('id', 'category',
                   'title', 'description', 'preview_image',
                   'created', 'author', 'rating',
-                  'is_news', 'is_event', 'lat', 'lon', 'event_date')
+                  'is_news', 'is_event', 'lat', 'lon', 'event_date',
+                  'image_url', 'address')
 
 
 class RouteSerializer(serializers.ModelSerializer):
