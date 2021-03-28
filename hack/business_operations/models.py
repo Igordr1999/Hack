@@ -74,11 +74,15 @@ class GuideBlock(models.Model):
         ordering = ["title"]
 
 
+class GuideTags(models.Model):
+    name = models.CharField(max_length=64)
+
+
 class Guide(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     category = models.ForeignKey(GuideCategory, on_delete=models.CASCADE, null=True, blank=True)
-    title = models.CharField(max_length=32)
-    description = models.CharField(max_length=500)
+    title = models.CharField(max_length=256)
+    description = models.CharField(max_length=500, null=True, blank=True)
     preview_image = models.ImageField(upload_to="guidepreviewimage/", null=True, blank=True)
     created = models.DateTimeField(auto_now_add=True, null=True, blank=True)
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True, blank=True)
@@ -89,7 +93,12 @@ class Guide(models.Model):
     lat = models.FloatField(default=55.7522)
     lon = models.FloatField(default=37.6156)
     event_date = models.DateTimeField(null=True, blank=True)
-    blocks = models.ManyToManyField(GuideBlock)
+    blocks = models.ManyToManyField(GuideBlock, blank=True)
+
+    tags = models.ManyToManyField(GuideTags, blank=True)
+    image_url = models.CharField(max_length=500, null=True, blank=True)
+    address = models.CharField(max_length=500, null=True, blank=True)
+    yandex_id = models.CharField(max_length=64, null=True, blank=True)
 
     def __str__(self):
         return self.title
