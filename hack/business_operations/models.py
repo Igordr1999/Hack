@@ -48,7 +48,7 @@ class Story(models.Model):
 
 class GuideCategory(models.Model):
     name = models.CharField(max_length=64)
-    color = models.CharField(max_length=6)
+    color = models.CharField(max_length=7)
 
     def __str__(self):
         return self.name
